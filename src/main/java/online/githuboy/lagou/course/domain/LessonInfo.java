@@ -1,16 +1,16 @@
 package online.githuboy.lagou.course.domain;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Data
-//@AllArgsConstructor
-@Builder
 public class LessonInfo {
-    private String lessionId;
-    private String lessonName;
-    private String appId;
-    private String fileId;
-    private String fileUrl;
-    private String fileEdk;
+    public String lessionId;
+    public String lessonName;
+    public String appId;
+    public String fileId;
+    public String fileUrl;
+    public String fileEdk;
+
+    public LessonInfo(String lessionId, String lessonName, String appId) {
+        this.lessionId = lessionId;
+        this.lessonName = lessonName;
+        this.appId = appId;
+    }
 }

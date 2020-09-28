@@ -52,8 +52,6 @@ public class M3U8MediaLoader implements Runnable, NamedTask, MediaLoader {
     private String fileName;
     private String fileId;
     private int retryCount = 0;
-    @Setter
-    private String url2;
 
     public M3U8MediaLoader(String m3u8Url, String fileName, String savePath, String fileId) {
         this.url = m3u8Url;
@@ -97,7 +95,7 @@ public class M3U8MediaLoader implements Runnable, NamedTask, MediaLoader {
                     log.info("视频解密key下载成功:savePath:{}", keySavePath.getAbsolutePath());
                     return true;
                 } else {
-                    log.error("获取视频:{},解密key url：{}\n失败:{}", fileName, keyUrlPath, "可能cookie过期或者没有购买视频");
+                    log.error("获取视频{},解密key url：{}\n失败:{}", fileName, keyUrlPath, "可能cookie过期或者没有购买视频");
                     return false;
                 }
             } catch (Exception e) {
@@ -110,9 +108,8 @@ public class M3U8MediaLoader implements Runnable, NamedTask, MediaLoader {
 
     public void load() throws IOException {
         byte[] download = HttpUtils.getContent(url);
-        log.info("获取视频:{},m3u8文件:{} 内容成功", fileName, url);
-        FileUtils.save(download, new File(this.baseFilePath, "video_origin.m3u8"));
-        FileUtils.save(HttpUtils.getContent(url2), new File(this.baseFilePath, "video_encrypted.m3u8"));
+        log.info("获取视频{},m3u8文件:{} 内容成功", fileName, url);
+        FileUtils.save(HttpUtils.getContent(url), new File(this.baseFilePath, "video_encrypted.m3u8"));
         this.raw = new String(download);
         this.baseUrl = url.substring(0, url.lastIndexOf("/") + 1);
         hsList = new ArrayList<>(16);

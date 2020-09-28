@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
  * @since 2019年8月3日
  */
 public class ExecutorService {
-    private final static TaskNamedThreadPoolExecutor executor = new TaskNamedThreadPoolExecutor(16, 16,
+    private final static TaskNamedThreadPoolExecutor executor = new TaskNamedThreadPoolExecutor(4, 6,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>());
 
-    private final static TaskNamedThreadPoolExecutor hlsExecutor = new TaskNamedThreadPoolExecutor(16, 16,
+    private final static TaskNamedThreadPoolExecutor hlsExecutor = new TaskNamedThreadPoolExecutor(8, 8,
             0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>());
 

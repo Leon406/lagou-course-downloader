@@ -9,6 +9,4 @@ import java.util.concurrent.CountDownLatch;
 public interface MediaLoader extends Runnable {
     default void setLatch(CountDownLatch latch) {
     }
-
-    ;
 }

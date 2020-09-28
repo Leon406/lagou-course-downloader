@@ -14,5 +14,4 @@ public class PublicUtils {
             line = br.readLine();
         }
     }
-
 }
