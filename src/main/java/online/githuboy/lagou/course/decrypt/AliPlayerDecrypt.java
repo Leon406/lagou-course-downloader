@@ -74,7 +74,7 @@ public class AliPlayerDecrypt {
         String cqs = getCQS(allParams);
         System.out.println(cqs);
         //构造签名字符串
-        String queryString = cqs ;
+        String queryString = cqs;
         String api = "https://vod.cn-shanghai.aliyuncs.com/?" + queryString;
         String body1 = HttpRequest.get(api).execute().body();
         System.out.println(api);
@@ -85,7 +85,7 @@ public class AliPlayerDecrypt {
 
         getMp4();
 
-//        decrypt();
+        decrypt();
     }
 
     private static void decrypt() throws UnsupportedEncodingException {
@@ -180,7 +180,7 @@ public class AliPlayerDecrypt {
         return null;
     }
 
-    static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     /*生成当前UTC时间戳Time*/
     private static String generateTimestamp() {

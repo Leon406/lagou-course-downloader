@@ -2,6 +2,7 @@ package online.githuboy.lagou.course;
 
 import com.alibaba.fastjson.JSONObject;
 import online.githuboy.lagou.course.domain.CourseDetailList;
+import online.githuboy.lagou.course.domain.CourseList;
 import online.githuboy.lagou.course.domain.LessonInfo;
 import online.githuboy.lagou.course.task.VideoInfoLoader;
 import online.githuboy.lagou.course.utils.HttpUtils;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2019年8月2日
  */
 public class Downloader {
+    private static final String PAID_COURSES = "https://gate.lagou.com/v1/neirong/kaiwu/getAllCoursePurchasedRecordForPC?t=%s";
     private final static String COURSE_INFO_API = "https://gate.lagou.com/v1/neirong/kaiwu/getCourseLessons?courseId=%s";
     /**
      * 拉钩视频课程地址
@@ -50,7 +52,11 @@ public class Downloader {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 //        if (checkFFMPEG()) return;
-        String courseId = "251";
+//        String courseId = "251";
+
+        parsePaidCoursesList();
+
+        String courseId = "536";
         String savePath = "E:\\lagou";
         Downloader downloader = new Downloader(courseId, savePath);
         Thread logThread = new Thread(() -> {
@@ -85,7 +91,6 @@ public class Downloader {
         parseLessonInfo2();
         parseVideoInfo();
         downloadMedia();
-
     }
 
     private void parseLessonInfo2() throws IOException {
@@ -108,7 +113,7 @@ public class Downloader {
         for (CourseDetailList.ContentBean.CourseSectionListBean sectionListBean : courseDetailList.content.courseSectionList) {
             for (CourseDetailList.ContentBean.CourseSectionListBean.CourseLessonsBean courseLesson : sectionListBean.courseLessons) {
                 if (courseLesson.videoMediaDTO != null) {
-                    LessonInfo lessonInfo=  new LessonInfo(courseLesson.id,courseLesson.theme,courseLesson.appId);
+                    LessonInfo lessonInfo = new LessonInfo(courseLesson.id, courseLesson.theme, courseLesson.appId);
                     lessonInfo.fileId = courseLesson.videoMediaDTO.fileId;
                     lessonInfo.fileEdk = courseLesson.videoMediaDTO.fileEdk;
                     lessonInfo.fileUrl = courseLesson.videoMediaDTO.fileUrl;
@@ -120,6 +125,33 @@ public class Downloader {
             }
         }
         System.out.println(1);
+    }
+
+    private static void parsePaidCoursesList() throws IOException {
+        String strContent = HttpUtils
+                .get(String.format(PAID_COURSES, System.currentTimeMillis()), CookieStore.getCookie())
+                .header("x-l-req-header", " {deviceType:1}")
+                .execute().body();
+
+        CourseList courseList = JSONObject.parseObject(strContent, CourseList.class);
+        if (courseList.state != 1) {
+            throw new RuntimeException("访问课程信息出错:" + strContent);
+        }
+        for (CourseList.ContentBean.AllCoursePurchasedRecordBean recordBean : courseList.content.allCoursePurchasedRecord) {
+            if (recordBean.bigCourseRecordList != null) {
+                for (CourseList.ContentBean.AllCoursePurchasedRecordBean.BigCourseRecordListBean bigCourseRecordListBean : recordBean.bigCourseRecordList) {
+                    System.out.println(bigCourseRecordListBean);
+                }
+            }
+
+            if (recordBean.courseRecordList != null) {
+                for (CourseList.ContentBean.AllCoursePurchasedRecordBean.CourseRecord courseRecord : recordBean.courseRecordList) {
+                    System.out.println(courseRecord);
+                }
+            }
+        }
+        System.out.println("rsp : " + strContent);
+
     }
 
     private void parseVideoInfo() {

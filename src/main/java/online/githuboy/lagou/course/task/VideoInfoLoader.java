@@ -6,7 +6,6 @@ import online.githuboy.lagou.course.ExecutorService;
 import online.githuboy.lagou.course.MediaLoader;
 
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
