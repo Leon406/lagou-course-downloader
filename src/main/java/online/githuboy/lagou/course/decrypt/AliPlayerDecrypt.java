@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import online.githuboy.lagou.course.CookieStore;
 import online.githuboy.lagou.course.domain.LessonPlayHistory;
 import online.githuboy.lagou.course.utils.HttpUtils;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
